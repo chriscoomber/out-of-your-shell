@@ -1,0 +1,88 @@
+[gd_scene load_steps=9 format=3 uid="uid://crw0b2y7b4i0x"]
+
+[ext_resource type="Texture2D" uid="uid://dhuhli34vow64" path="res://icon.svg" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://ki7hqh8u6j5v" path="res://character.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bdeu26hhugh0v" path="res://rigid_tongue.gd" id="3_h2yge"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
+size = Vector2(1000, 100)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+radius = 100.0
+
+[sub_resource type="Gradient" id="Gradient_1bvp3"]
+offsets = PackedFloat32Array(0.68, 0.7)
+colors = PackedColorArray(0, 0.41, 0.38950002, 1, 0.9, 0.9, 0.9, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lquwl"]
+gradient = SubResource("Gradient_1bvp3")
+width = 200
+height = 200
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ig7tw"]
+radius = 19.0
+height = 90.0
+
+[node name="Main" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(569, 449)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_0xm2m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(1, 1.000001)
+scale = Vector2(7.8125, 0.7890625)
+texture = ExtResource("1_ig7tw")
+
+[node name="Character" type="Node2D" parent="."]
+script = ExtResource("2_0xm2m")
+
+[node name="Body" type="RigidBody2D" parent="Character"]
+position = Vector2(541, 198)
+collision_layer = 2
+mass = 2.0
+continuous_cd = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/Body"]
+shape = SubResource("CircleShape2D_h2yge")
+
+[node name="Sprite2D" type="Sprite2D" parent="Character/Body"]
+texture = SubResource("GradientTexture2D_lquwl")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Character/Body"]
+texture = ExtResource("1_ig7tw")
+
+[node name="RigidTongue" type="RigidBody2D" parent="Character"]
+position = Vector2(540, 250)
+mass = 0.1
+inertia = 800.0
+script = ExtResource("3_h2yge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/RigidTongue"]
+shape = SubResource("CapsuleShape2D_ig7tw")
+
+[node name="Sprite2D" type="Sprite2D" parent="Character/RigidTongue"]
+scale = Vector2(0.3199951, 0.64)
+texture = ExtResource("1_ig7tw")
+
+[node name="GrooveJoint2D" type="GrooveJoint2D" parent="Character"]
+visible = false
+position = Vector2(541, 198)
+node_a = NodePath("../Body")
+node_b = NodePath("../RigidTongue")
+length = 100.0
+initial_offset = 50.0
+
+[node name="SpringBack" type="DampedSpringJoint2D" parent="Character"]
+position = Vector2(541, 138)
+node_a = NodePath("../Body")
+node_b = NodePath("../RigidTongue")
+length = 75.0
+rest_length = 30.0
+stiffness = 60.0

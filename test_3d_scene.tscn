@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwff7ilcjwgy"]
+
+[ext_resource type="Script" uid="uid://b023sw2l6b86n" path="res://character_3d.gd" id="1_y6b4w"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f5f6c"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_18o0n"]
+sky_material = SubResource("ProceduralSkyMaterial_f5f6c")
+
+[sub_resource type="Environment" id="Environment_y6b4w"]
+background_mode = 2
+sky = SubResource("Sky_18o0n")
+tonemap_mode = 2
+
+[sub_resource type="SphereMesh" id="SphereMesh_wax8m"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ild75"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f5f6c"]
+radius = 0.1
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_18o0n"]
+radius = 0.1
+height = 0.5
+
+[node name="Test3DScene" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y6b4w")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+collision_mask = 3
+size = Vector3(10, 1, 3)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7019491, 4.5657797)
+
+[node name="Character" type="Node3D" parent="."]
+script = ExtResource("1_y6b4w")
+
+[node name="Body" type="RigidBody3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9616547, 0)
+collision_layer = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/Body"]
+mesh = SubResource("SphereMesh_wax8m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Body"]
+shape = SubResource("SphereShape3D_ild75")
+
+[node name="RigidTongue" type="RigidBody3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7162421, 0)
+collision_layer = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/RigidTongue"]
+mesh = SubResource("CapsuleMesh_f5f6c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/RigidTongue"]
+shape = SubResource("CapsuleShape3D_18o0n")
