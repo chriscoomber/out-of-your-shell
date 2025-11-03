@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bvvd3ofim54p"]
+[gd_scene load_steps=13 format=3 uid="uid://bvvd3ofim54p"]
 
-[ext_resource type="Script" uid="uid://b023sw2l6b86n" path="res://scenes/character/character.gd" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://b023sw2l6b86n" path="res://scenes/player/player.gd" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://ddoc0ruml7yc8" path="res://scenes/camera/camera_25d.gd" id="1_sugp2"]
 [ext_resource type="Texture2D" uid="uid://dhuhli34vow64" path="res://icon.svg" id="3_sugp2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
@@ -49,6 +50,18 @@ use_collision = true
 collision_mask = 3
 size = Vector3(10, 1, 3)
 
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.375, 0, 0)
+use_collision = true
+collision_mask = 3
+size = Vector3(3.75, 1, 3)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(0.89908457, 0.4377749, 0, -0.4377749, 0.89908457, 0, 0, 0, 1, 13.841007, -1.8418564, 0)
+use_collision = true
+collision_mask = 3
+size = Vector3(8.53894, 1, 3)
+
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 0)
 use_collision = true
@@ -56,19 +69,25 @@ collision_mask = 3
 size = Vector3(1, 10, 3)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3170528, 7.05089, 0)
 use_collision = true
 collision_mask = 3
 size = Vector3(1, 10, 3)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7019491, 4.5657797)
+script = ExtResource("1_sugp2")
+target = NodePath("../Player")
+offset = Vector3(0, 4, 10)
+smoothSpeed = 8.0
+noiseStrength = 0.0
 
-[node name="Character" type="Node3D" parent="."]
+[node name="Player" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1590405, 0)
 script = ExtResource("1_0wfyh")
 
-[node name="Body" type="RigidBody3D" parent="Character"]
+[node name="Body" type="RigidBody3D" parent="Player"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 collision_layer = 2
 axis_lock_linear_z = true
 axis_lock_angular_x = true
@@ -78,28 +97,37 @@ physics_material_override = SubResource("PhysicsMaterial_0wfyh")
 continuous_cd = true
 angular_damp = 5.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/Body"]
-visible = false
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/Body"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("SphereMesh_7mycd")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Body"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("SphereShape3D_272bh")
 
-[node name="Head" type="RigidBody3D" parent="Character"]
+[node name="CameraTarget" type="Node3D" parent="Player/Body"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Head" type="RigidBody3D" parent="Player"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 collision_layer = 2
 axis_lock_linear_z = true
 axis_lock_angular_x = true
 axis_lock_angular_y = true
+mass = 0.5
 inertia = Vector3(0.1, 0.1, 0.1)
 continuous_cd = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/Head"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/Head"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_5vw27")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Head"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Head"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_kek77")
 
-[node name="Generic6DOFJoint3D" type="Generic6DOFJoint3D" parent="Character"]
+[node name="Generic6DOFJoint3D" type="Generic6DOFJoint3D" parent="Player"]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 node_a = NodePath("../Body")
 node_b = NodePath("../Head")
 linear_limit_y/upper_distance = 0.5

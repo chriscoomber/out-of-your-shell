@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	#body.apply_central_force(spring_force)
 	if Input.is_action_just_pressed("ui_accept"):
 		unlock_head()
-	elif not Input.is_action_pressed("ui_accept") and body_to_tongue.length_squared() < 0.01:
+	elif not Input.is_action_pressed("ui_accept") and body_to_tongue.length_squared() < 0.1:
 		lock_head()
 		
 	#head.apply_central_impulse(body_to_tongue_unit * IMPULSE_STRENGTH)
