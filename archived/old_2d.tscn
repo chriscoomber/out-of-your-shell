@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://crw0b2y7b4i0x"]
 
-[ext_resource type="Texture2D" uid="uid://dhuhli34vow64" path="res://icon.svg" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://ki7hqh8u6j5v" path="res://character.gd" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://bdeu26hhugh0v" path="res://rigid_tongue.gd" id="3_h2yge"]
+[ext_resource type="Texture2D" uid="uid://dhuhli34vow64" path="res://icon.svg" id="1_ycbqg"]
+[ext_resource type="Script" uid="uid://ki7hqh8u6j5v" path="res://archived/character.gd" id="2_j61y1"]
+[ext_resource type="Script" uid="uid://bdeu26hhugh0v" path="res://archived/rigid_tongue.gd" id="3_dqtnu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
 size = Vector2(1000, 100)
@@ -38,13 +38,13 @@ shape = SubResource("RectangleShape2D_0xm2m")
 texture_repeat = 2
 position = Vector2(1, 1.000001)
 scale = Vector2(7.8125, 0.7890625)
-texture = ExtResource("1_ig7tw")
+texture = ExtResource("1_ycbqg")
 
 [node name="Character" type="Node2D" parent="."]
-script = ExtResource("2_0xm2m")
+script = ExtResource("2_j61y1")
 
 [node name="Body" type="RigidBody2D" parent="Character"]
-position = Vector2(541, 198)
+position = Vector2(540, 200)
 collision_layer = 2
 mass = 2.0
 continuous_cd = 2
@@ -56,33 +56,20 @@ shape = SubResource("CircleShape2D_h2yge")
 texture = SubResource("GradientTexture2D_lquwl")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Character/Body"]
-texture = ExtResource("1_ig7tw")
+texture = ExtResource("1_ycbqg")
 
 [node name="RigidTongue" type="RigidBody2D" parent="Character"]
 position = Vector2(540, 250)
+collision_layer = 2
 mass = 0.1
 inertia = 800.0
-script = ExtResource("3_h2yge")
+custom_integrator = true
+continuous_cd = 2
+script = ExtResource("3_dqtnu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character/RigidTongue"]
 shape = SubResource("CapsuleShape2D_ig7tw")
 
 [node name="Sprite2D" type="Sprite2D" parent="Character/RigidTongue"]
 scale = Vector2(0.3199951, 0.64)
-texture = ExtResource("1_ig7tw")
-
-[node name="GrooveJoint2D" type="GrooveJoint2D" parent="Character"]
-visible = false
-position = Vector2(541, 198)
-node_a = NodePath("../Body")
-node_b = NodePath("../RigidTongue")
-length = 100.0
-initial_offset = 50.0
-
-[node name="SpringBack" type="DampedSpringJoint2D" parent="Character"]
-position = Vector2(541, 138)
-node_a = NodePath("../Body")
-node_b = NodePath("../RigidTongue")
-length = 75.0
-rest_length = 30.0
-stiffness = 60.0
+texture = ExtResource("1_ycbqg")

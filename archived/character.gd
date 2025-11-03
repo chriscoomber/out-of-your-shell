@@ -15,16 +15,16 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func _physics_process(delta: float) -> void:
-	# Angular damping on the tongue to bring it to the same angular velocity as
-	# the body
-	var ang_vel_delta = body.angular_velocity - rigid_tongue.angular_velocity
-	rigid_tongue.apply_torque(ang_vel_delta * ROTATION_DAMP_STRENGTH)
-	
-	# Torque bringing the tongue back in line with the body
-	var rot_delta = calculate_rotation_difference(body.rotation, rigid_tongue.rotation)
-	rigid_tongue.apply_torque(rot_delta * ROTATION_SPRING_STRENGTH)
-	#body.apply_torque(-rot_delta * ROTATION_SPRING_STRENGTH)
-
+	## Angular damping on the tongue to bring it to the same angular velocity as
+	## the body
+	#var ang_vel_delta = body.angular_velocity - rigid_tongue.angular_velocity
+	#rigid_tongue.apply_torque(ang_vel_delta * ROTATION_DAMP_STRENGTH)
+	#
+	## Torque bringing the tongue back in line with the body
+	#var rot_delta = calculate_rotation_difference(body.rotation, rigid_tongue.rotation)
+	#rigid_tongue.apply_torque(rot_delta * ROTATION_SPRING_STRENGTH)
+	##body.apply_torque(-rot_delta * ROTATION_SPRING_STRENGTH)
+#
 	var body_to_tongue: Vector2 = (rigid_tongue.position - body.position)
 	var body_to_tongue_unit: Vector2 = body_to_tongue.normalized()
 	

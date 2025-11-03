@@ -1,0 +1,116 @@
+[gd_scene load_steps=12 format=3 uid="uid://bvvd3ofim54p"]
+
+[ext_resource type="Script" uid="uid://b023sw2l6b86n" path="res://scenes/character/character.gd" id="1_0wfyh"]
+[ext_resource type="Texture2D" uid="uid://dhuhli34vow64" path="res://icon.svg" id="3_sugp2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_18o0n"]
+sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_lquwl"]
+background_mode = 2
+sky = SubResource("Sky_18o0n")
+tonemap_mode = 2
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0wfyh"]
+friction = 5.0
+rough = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_texture = ExtResource("3_sugp2")
+
+[sub_resource type="SphereMesh" id="SphereMesh_7mycd"]
+material = SubResource("StandardMaterial3D_jyhfs")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_272bh"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5vw27"]
+radius = 0.2
+height = 0.975
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kek77"]
+radius = 0.2
+height = 0.975
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lquwl")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+collision_mask = 3
+size = Vector3(10, 1, 3)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 0)
+use_collision = true
+collision_mask = 3
+size = Vector3(1, 10, 3)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0)
+use_collision = true
+collision_mask = 3
+size = Vector3(1, 10, 3)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7019491, 4.5657797)
+
+[node name="Character" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1590405, 0)
+script = ExtResource("1_0wfyh")
+
+[node name="Body" type="RigidBody3D" parent="Character"]
+collision_layer = 2
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+mass = 3.0
+physics_material_override = SubResource("PhysicsMaterial_0wfyh")
+continuous_cd = true
+angular_damp = 5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/Body"]
+visible = false
+mesh = SubResource("SphereMesh_7mycd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Body"]
+shape = SubResource("SphereShape3D_272bh")
+
+[node name="Head" type="RigidBody3D" parent="Character"]
+collision_layer = 2
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+inertia = Vector3(0.1, 0.1, 0.1)
+continuous_cd = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character/Head"]
+mesh = SubResource("CapsuleMesh_5vw27")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Head"]
+shape = SubResource("CapsuleShape3D_kek77")
+
+[node name="Generic6DOFJoint3D" type="Generic6DOFJoint3D" parent="Character"]
+node_a = NodePath("../Body")
+node_b = NodePath("../Head")
+linear_limit_y/upper_distance = 0.5
+linear_limit_y/softness = 0.1
+linear_limit_y/restitution = 1.0
+linear_limit_z/enabled = false
+linear_spring_x/stiffness = 1000.0
+linear_spring_x/equilibrium_point = 10.0
+linear_spring_y/stiffness = 1000.0
+linear_spring_y/equilibrium_point = 10.0
+linear_spring_z/stiffness = 1000.0
+linear_spring_z/equilibrium_point = 10.0
+angular_limit_x/enabled = false
+angular_limit_y/enabled = false

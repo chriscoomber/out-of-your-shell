@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Out Of Your Shell"
-run/main_scene="uid://crw0b2y7b4i0x"
+run/main_scene="uid://bvvd3ofim54p"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
